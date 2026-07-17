@@ -30,20 +30,48 @@ const basemapSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/serv
 basemapOSM.addTo(map);
 
 // ---------- 4. Palet warna tiap layer ----------
-const WARNA = {
-  batas: '#16241d',
-  permukiman: '#a8622f',
-  sawah: '#7a9b4e',
-  sungai: '#3e7cb1',
-  vegetasi: '#2b4a34',
-  umkm: '#a8622f',
-  fasilitas: '#3e7cb1',
-  bencana: {
-    'Tinggi': '#b34a3e',
-    'Sedang': '#d1893a',
-    'Rendah': '#7a9b4e'
+// Batas Desa — pakai TRIK 2 LAYER biar ada efek "mask kuning" di bawah garis hitam,
+// sesuai spek resmi (garis hitam di atas, mask kuning selebar 1mm di bawahnya)
+L.geoJSON(batasDesaData, {
+  style: { color: '#FFFF00', weight: 5, opacity: 1 } // layer bawah: mask kuning
+}).addTo(map);
+L.geoJSON(batasDesaData, {
+  style: { color: '#000000', weight: 1.5, opacity: 1 } // layer atas: garis hitam
+}).addTo(map);
+
+// Permukiman
+L.geoJSON(permukimanData, {
+  style: {
+    color: '#000000', weight: 0.5,
+    fillColor: '#FFCCBF', fillOpacity: 1
   }
-};
+}).addTo(map);
+
+// Sawah
+L.geoJSON(sawahData, {
+  style: {
+    color: '#000000', weight: 0.3,
+    fillColor: '#99FFFF', fillOpacity: 1
+  }
+}).addTo(map);
+
+// Sungai (kalau data poligon/badan sungai)
+L.geoJSON(sungaiData, {
+  style: {
+    color: '#00FFFF', weight: 1,
+    fillColor: '#CCFFFF', fillOpacity: 1
+  }
+}).addTo(map);
+// Kalau datanya garis (bukan poligon), pake ini aja:
+// style: { color: '#00FFFF', weight: 2 }
+
+// Vegetasi
+L.geoJSON(vegetasiData, {
+  style: {
+    color: '#000000', weight: 0.3,
+    fillColor: '#D9FFC9', fillOpacity: 1
+  }
+}).addTo(map);
 
 // ---------- 5. Helper: bikin isi popup dari properties GeoJSON ----------
 function buatPopup(judul, tag, props, kunciDilewati = []) {
