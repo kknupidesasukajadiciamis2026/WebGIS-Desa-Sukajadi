@@ -30,48 +30,20 @@ const basemapSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/serv
 basemapOSM.addTo(map);
 
 // ---------- 4. Palet warna tiap layer ----------
-// Batas Desa — pakai TRIK 2 LAYER biar ada efek "mask kuning" di bawah garis hitam,
-// sesuai spek resmi (garis hitam di atas, mask kuning selebar 1mm di bawahnya)
-L.geoJSON(batasDesaData, {
-  style: { color: '#FFFF00', weight: 5, opacity: 1 } // layer bawah: mask kuning
-}).addTo(map);
-L.geoJSON(batasDesaData, {
-  style: { color: '#000000', weight: 1.5, opacity: 1 } // layer atas: garis hitam
-}).addTo(map);
-
-// Permukiman
-L.geoJSON(permukimanData, {
-  style: {
-    color: '#000000', weight: 0.5,
-    fillColor: '#FFCCBF', fillOpacity: 1
+const WARNA = {
+  batas: '#16241d',
+  permukiman: '#a8622f',
+  sawah: '#7a9b4e',
+  sungai: '#3e7cb1',
+  vegetasi: '#2b4a34',
+  umkm: '#a8622f',
+  fasilitas: '#3e7cb1',
+  bencana: {
+    'Tinggi': '#b34a3e',
+    'Sedang': '#d1893a',
+    'Rendah': '#7a9b4e'
   }
-}).addTo(map);
-
-// Sawah
-L.geoJSON(sawahData, {
-  style: {
-    color: '#000000', weight: 0.3,
-    fillColor: '#99FFFF', fillOpacity: 1
-  }
-}).addTo(map);
-
-// Sungai (kalau data poligon/badan sungai)
-L.geoJSON(sungaiData, {
-  style: {
-    color: '#00FFFF', weight: 1,
-    fillColor: '#CCFFFF', fillOpacity: 1
-  }
-}).addTo(map);
-// Kalau datanya garis (bukan poligon), pake ini aja:
-// style: { color: '#00FFFF', weight: 2 }
-
-// Vegetasi
-L.geoJSON(vegetasiData, {
-  style: {
-    color: '#000000', weight: 0.3,
-    fillColor: '#D9FFC9', fillOpacity: 1
-  }
-}).addTo(map);
+};
 
 // ---------- 5. Helper: bikin isi popup dari properties GeoJSON ----------
 function buatPopup(judul, tag, props, kunciDilewati = []) {
@@ -97,6 +69,8 @@ function buatLayerPoligon(warna, judulTag) {
     style: { color: warna, weight: 1, fillColor: warna, fillOpacity: 0.4 },
     onEachFeature: (f, layer) => {
       layer.bindPopup(buatPopup(f.properties.jenis, judulTag, f.properties, ['jenis']));
+      layer.on('mouseover', () => layer.setStyle({ weight: 3, fillOpacity: 0.65 }));
+      layer.on('mouseout', () => layer.setStyle({ weight: 1, fillOpacity: 0.4 }));
     }
   });
 }
@@ -112,6 +86,8 @@ let layerUmkm = L.geoJSON(null, {
   }),
   onEachFeature: (f, layer) => {
     layer.bindPopup(buatPopup(f.properties.nama_usaha, 'UMKM &middot; ' + f.properties.jenis_usaha, f.properties, ['nama_usaha', 'jenis_usaha']));
+    layer.on('mouseover', () => layer.setRadius(9));
+    layer.on('mouseout', () => layer.setRadius(6));
   }
 });
 
@@ -131,6 +107,8 @@ let layerFasilitas = L.geoJSON(null, {
   }),
   onEachFeature: (f, layer) => {
     layer.bindPopup(buatPopup(f.properties.nama_fasilitas, 'Fasilitas &middot; ' + f.properties.jenis_fasilitas, f.properties, ['nama_fasilitas', 'jenis_fasilitas']));
+    layer.on('mouseover', () => layer.setRadius(9.5));
+    layer.on('mouseout', () => layer.setRadius(6.5));
   }
 });
 
@@ -149,14 +127,14 @@ let layerBencana = L.geoJSON(null, {
 
 // ---------- 11. Load semua file GeoJSON ----------
 const sumberData = [
-  { url: 'batas_desa.geojson', layer: layerBatasDesa, nama: 'Batas Desa' },
-  { url: 'permukiman.geojson', layer: layerPermukiman, nama: 'Permukiman' },
-  { url: 'sawah.geojson', layer: layerSawah, nama: 'Sawah' },
-  { url: 'sungai.geojson', layer: layerSungai, nama: 'Sungai' },
-  { url: 'vegetasi.geojson', layer: layerVegetasi, nama: 'Vegetasi' },
-  { url: 'umkm.geojson', layer: layerUmkm, nama: 'UMKM' },
-  { url: 'fasilitas_umum.geojson', layer: layerFasilitas, nama: 'Fasilitas Umum' },
-  { url: 'kerawanan_bencana.geojson', layer: layerBencana, nama: 'Kerawanan Bencana' }
+  { url: 'data/batas_desa.geojson', layer: layerBatasDesa, nama: 'Batas Desa' },
+  { url: 'data/permukiman.geojson', layer: layerPermukiman, nama: 'Permukiman' },
+  { url: 'data/sawah.geojson', layer: layerSawah, nama: 'Sawah' },
+  { url: 'data/sungai.geojson', layer: layerSungai, nama: 'Sungai' },
+  { url: 'data/vegetasi.geojson', layer: layerVegetasi, nama: 'Vegetasi' },
+  { url: 'data/umkm.geojson', layer: layerUmkm, nama: 'UMKM' },
+  { url: 'data/fasilitas_umum.geojson', layer: layerFasilitas, nama: 'Fasilitas Umum' },
+  { url: 'data/kerawanan_bencana.geojson', layer: layerBencana, nama: 'Kerawanan Bencana' }
 ];
 
 Promise.all(
@@ -185,7 +163,17 @@ Promise.all(
       map.fitBounds(layerBatasDesa.getBounds(), { padding: [40, 40] });
     }
   } catch (e) { /* biarkan default view */ }
+
+  perbaruiBadgeLayer();
 });
+
+// ---------- 11b. Badge jumlah layer aktif di topbar ----------
+function perbaruiBadgeLayer() {
+  const badge = document.getElementById('layerBadge');
+  if (!badge) return;
+  const aktif = Object.values(checkboxMap).filter(l => map.hasLayer(l)).length;
+  badge.textContent = `${aktif} / ${Object.keys(checkboxMap).length} layer aktif`;
+}
 
 // ---------- 12. Checkbox toggle layer ----------
 const checkboxMap = {
@@ -204,6 +192,7 @@ Object.keys(checkboxMap).forEach(id => {
   el.addEventListener('change', () => {
     const layer = checkboxMap[id];
     if (el.checked) { layer.addTo(map); } else { map.removeLayer(layer); }
+    perbaruiBadgeLayer();
   });
 });
 
