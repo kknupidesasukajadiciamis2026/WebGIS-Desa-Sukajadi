@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>WebGIS Desa Sukajadi — KKN Sauyunan</title>
 <meta name="description" content="WebGIS Desa Sukajadi, Kecamatan Sadananya, Kabupaten Ciamis — luaran kegiatan KKN Sauyunan." />
+<link rel="icon" type="image/png" href="img/logo-kkn.png" />
 
 <!-- Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -17,12 +18,23 @@
 <!-- ============ LANDING PAGE ============ -->
 <div id="landing">
   <div class="landing-card">
+    <div class="landing-logos">
+      <img src="img/logo-kkn.png" alt="Logo KKN UPI Desa Sukajadi" />
+      <span class="x">&times;</span>
+      <img src="img/logo-upi.png" alt="Logo Universitas Pendidikan Indonesia" />
+    </div>
     <div class="landing-eyebrow">KKN Sauyunan &middot; Desa Sukajadi</div>
     <h1>WebGIS <span>Desa Sukajadi</span></h1>
     <p class="landing-sub">
       Kecamatan Sadananya, Kabupaten Ciamis, Jawa Barat — peta interaktif batas desa,
       penggunaan lahan, sebaran UMKM, fasilitas umum, dan kerawanan bencana.
     </p>
+
+    <div class="landing-stats">
+      <div class="stat"><b>326</b><span>Permukiman</span></div>
+      <div class="stat"><b>48</b><span>Petak Sawah</span></div>
+      <div class="stat"><b>8</b><span>Layer Peta</span></div>
+    </div>
 
     <div class="landing-tags">
       <span>Batas Desa</span>
@@ -56,8 +68,12 @@
 <div id="app">
   <div id="topbar">
     <button class="icon-btn" id="toggleSidebar" title="Tampilkan/sembunyikan panel">☰</button>
-    <div class="brand"><span class="dot"></span>WebGIS Sukajadi <small>KKN SAUYUNAN</small></div>
+    <div class="brand">
+      <img src="img/logo-kkn.png" alt="Logo KKN" />
+      WebGIS Sukajadi <small>KKN SAUYUNAN &middot; UPI</small>
+    </div>
     <div class="topbar-spacer"></div>
+    <span class="layer-badge" id="layerBadge">Memuat data&hellip;</span>
   </div>
 
   <div id="sidebar">
