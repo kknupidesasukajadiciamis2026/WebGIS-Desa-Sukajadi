@@ -127,14 +127,14 @@ let layerBencana = L.geoJSON(null, {
 
 // ---------- 11. Load semua file GeoJSON ----------
 const sumberData = [
-  { url: 'data/batas_desa.geojson', layer: layerBatasDesa, nama: 'Batas Desa' },
-  { url: 'data/permukiman.geojson', layer: layerPermukiman, nama: 'Permukiman' },
-  { url: 'data/sawah.geojson', layer: layerSawah, nama: 'Sawah' },
-  { url: 'data/sungai.geojson', layer: layerSungai, nama: 'Sungai' },
-  { url: 'data/vegetasi.geojson', layer: layerVegetasi, nama: 'Vegetasi' },
-  { url: 'data/umkm.geojson', layer: layerUmkm, nama: 'UMKM' },
-  { url: 'data/fasilitas_umum.geojson', layer: layerFasilitas, nama: 'Fasilitas Umum' },
-  { url: 'data/kerawanan_bencana.geojson', layer: layerBencana, nama: 'Kerawanan Bencana' }
+  { url: 'batas_desa.geojson', layer: layerBatasDesa, nama: 'Batas Desa' },
+  { url: 'permukiman.geojson', layer: layerPermukiman, nama: 'Permukiman' },
+  { url: 'sawah.geojson', layer: layerSawah, nama: 'Sawah' },
+  { url: 'sungai.geojson', layer: layerSungai, nama: 'Sungai' },
+  { url: 'vegetasi.geojson', layer: layerVegetasi, nama: 'Vegetasi' },
+  { url: 'umkm.geojson', layer: layerUmkm, nama: 'UMKM' },
+  { url: 'fasilitas_umum.geojson', layer: layerFasilitas, nama: 'Fasilitas Umum' },
+  { url: 'kerawanan_bencana.geojson', layer: layerBencana, nama: 'Kerawanan Bencana' }
 ];
 
 Promise.all(
