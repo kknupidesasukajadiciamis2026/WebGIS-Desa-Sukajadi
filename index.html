@@ -30,12 +30,6 @@
       penggunaan lahan, sebaran UMKM, fasilitas umum, dan kerawanan bencana.
     </p>
 
-    <div class="landing-stats">
-      <div class="stat"><b>326</b><span>Permukiman</span></div>
-      <div class="stat"><b>48</b><span>Petak Sawah</span></div>
-      <div class="stat"><b>8</b><span>Layer Peta</span></div>
-    </div>
-
     <div class="landing-tags">
       <span>Batas Desa</span>
       <span>Penggunaan Lahan</span>
@@ -45,19 +39,20 @@
     </div>
 
     <p class="landing-desc">
-      WebGIS ini merupakan salah satu luaran kegiatan Kuliah Kerja Nyata (KKN) &ldquo;Sauyunan&rdquo;
-      yang dilaksanakan di Desa Sukajadi. Peta ini disusun sebagai media visualisasi dan penyajian
-      informasi geospasial desa secara interaktif untuk mendukung digitalisasi data wilayah,
-      promosi UMKM lokal, dan edukasi mitigasi bencana bagi warga maupun perangkat desa.
+      WebGIS ini merupakan salah satu luaran kegiatan Kuliah Kerja Nyata mahasiswa Universitas Pendidikan Indonesia
+      tahun 2026, khususnya pada Desa Sukajadi, Kecamatan Sadananya, Kabupaten Ciamis. WebGIS ini dikembangkan sebagai
+      media visualisasi dan penyajian informasi geospasial secara interaktif guna mendukung digitalisasi data
+      wilayah, media promosi UMKM, dan edukasi mitigasi bencana bagi warga maupun perangkat desa.
       <br/><br/>
-      <strong>Catatan:</strong> sebagian data pada peta ini masih berupa data contoh (dummy)
-      dan akan dimutakhirkan sesuai hasil survei dan digitasi lapangan tim KKN.
+      <strong>Catatan:</strong> Informasi yang ditampilkan pada WebGIS ini diperoleh dari hasil survei lapangan
+      
     </p>
 
     <div class="landing-footer">
       <div class="landing-credit">
-        Disusun oleh <b>Tim KKN Sauyunan</b><br/>
+        Disusun oleh <b>Kelompok 2 KKN Kampus Berdampak, Desa Sukajadi, Sadananya, Ciamis</b><br/>
         Program Studi Survei Pemetaan dan Informasi Geografis
+        Universitas Pendidikan Indonesia
       </div>
       <button class="btn-enter" id="btnMasuk">Masuk ke Peta &nbsp;→</button>
     </div>
@@ -70,7 +65,7 @@
     <button class="icon-btn" id="toggleSidebar" title="Tampilkan/sembunyikan panel">☰</button>
     <div class="brand">
       <img src="img/logo-kkn.png" alt="Logo KKN" />
-      WebGIS Sukajadi <small>KKN SAUYUNAN &middot; UPI</small>
+      Desa Sukajadi
     </div>
     <div class="topbar-spacer"></div>
     <span class="layer-badge" id="layerBadge">Memuat data&hellip;</span>
@@ -78,13 +73,16 @@
 
   <div id="sidebar">
     <div class="sb-section">
-      <div class="sb-title"><span class="n">01</span> Data Dasar &middot; Hasil Digitasi</div>
+      <div class="sb-title"><span class="n">01</span> Batas Administrasi</div>
 
       <label class="layer-row">
         <input type="checkbox" id="chkBatas" checked>
         <span class="swatch" style="background:#16241d"></span>
-        <span class="lbl"><b>Batas Desa</b><small>Garis batas administrasi Desa Sukajadi</small></span>
+        <span class="lbl"><b>Batas Desa</b><small>Batas Administrasi Desa Sukajadi</small></span>
       </label>
+
+  <div class="sb-section">
+    <div class="sb-title"><span class="n">02</span> Penggunaan Lahan</div>
 
       <label class="layer-row">
         <input type="checkbox" id="chkPermukiman" checked>
@@ -112,18 +110,18 @@
     </div>
 
     <div class="sb-section">
-      <div class="sb-title"><span class="n">02</span> Data Tambahan &middot; Contoh</div>
+      <div class="sb-title"><span class="n">03</span> Data Tambahan &middot; Contoh</div>
 
       <label class="layer-row">
         <input type="checkbox" id="chkUmkm" checked>
         <span class="swatch" style="background:#a8622f;border-radius:50%"></span>
-        <span class="lbl"><b>Sebaran UMKM</b><small>Titik usaha mikro warga (dummy)</small></span>
+        <span class="lbl"><b>UMKM</b><small>Titik sebaran Usaha Mikro, Kecil, dan Menengah</small></span>
       </label>
 
       <label class="layer-row">
         <input type="checkbox" id="chkFasilitas" checked>
         <span class="swatch" style="background:#3e7cb1;border-radius:50%"></span>
-        <span class="lbl"><b>Fasilitas Umum</b><small>Balai desa, sekolah, dll (dummy)</small></span>
+        <span class="lbl"><b>Fasilitas Umum</b><small>Titik sebaran fasilitas umum</small></span>
       </label>
       <div class="legend-item"><span class="sw circle" style="background:#16241d"></span>Pemerintahan</div>
       <div class="legend-item"><span class="sw circle" style="background:#c99a3a"></span>Peribadatan</div>
@@ -131,10 +129,13 @@
       <div class="legend-item"><span class="sw circle" style="background:#b34a3e"></span>Kesehatan</div>
       <div class="legend-item"><span class="sw circle" style="background:#7a9b4e"></span>Olahraga/Sosial</div>
 
+    <div class="sb-section">
+      <div class="sb-title"><span class="n">03</span> Data Tambahan &middot; Contoh</div>
+
       <label class="layer-row">
         <input type="checkbox" id="chkBencana">
         <span class="swatch" style="background:#b34a3e"></span>
-        <span class="lbl"><b>Kerawanan Bencana</b><small>Zona rawan longsor & banjir (dummy)</small></span>
+        <span class="lbl"><b>Bahaya Bencana</b><small>Zona rawan longsor & banjir (dummy)</small></span>
       </label>
       <div class="legend-item"><span class="sw" style="background:#b34a3e"></span>Tinggi</div>
       <div class="legend-item"><span class="sw" style="background:#d1893a"></span>Sedang</div>
@@ -142,15 +143,15 @@
     </div>
 
     <div class="sb-section">
-      <div class="sb-title"><span class="n">03</span> Basemap</div>
+      <div class="sb-title"><span class="n">04</span> Basemap</div>
       <div class="basemap-choices">
-        <button id="bmOSM" class="active">Peta Jalan</button>
-        <button id="bmSat">Citra Satelit</button>
+        <button id="bmOSM" class="active">OpenStreetMap</button>
+        <button id="bmSat">ESRI Satellite</button>
       </div>
     </div>
 
     <div class="sb-section">
-      <div class="sb-title"><span class="n">04</span> Tentang</div>
+      <div class="sb-title"><span class="n">05</span> Tentang</div>
       <p class="sb-note">
         Batas desa, permukiman, sawah, sungai, dan vegetasi sudah pakai data hasil
         digitasi asli. Layer UMKM, fasilitas umum, dan kerawanan bencana masih
