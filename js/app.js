@@ -31,16 +31,13 @@ basemapOSM.addTo(map);
 
 // ---------- Palet warna (opacity penuh / 0% transparan) ----------
 const WARNA = {
+  batas: '#0a3c14',
   permukiman: '#8a5a1e',
   sawah: '#6b8e23',
   vegetasi: '#0a3c14',
   sungai: '#2f7fb0',
   umkm: '#c1440e',
-  bencana: { 'Tinggi': '#b3352e', 'Sedang': '#d1893a', 'Rendah': '#6b8e23' },
-  batasDesa: '#0a3c14',
-  dusunDepok: '#8a5a1e',
-  dusunLimus: '#1d4e89',
-  dusunDesa: '#6b4c7a'
+  bencana: { 'Tinggi': '#b3352e', 'Sedang': '#d1893a', 'Rendah': '#6b8e23' }
 };
 const WARNA_FASILITAS = {
   'Pemerintahan': '#0a3c14',
@@ -59,23 +56,13 @@ function popupSimple(text, sub) {
   return `<div class="gis-popup">${text}${sub ? `<span class="sub">${sub}</span>` : ''}</div>`;
 }
 
-// ---------- 01. Batas Administrasi (per wilayah, masing-masing layer sendiri) ----------
-function buatLayerBatas(warna, weight, dash) {
-  return L.geoJSON(null, {
-    style: { color: warna, weight: weight, dashArray: dash, fillOpacity: 0 },
-    onEachFeature: (f, layer) => layer.bindPopup(popupSimple(f.properties.nama, f.properties.info))
-  });
-}
-let layerBatasDesa = buatLayerBatas(WARNA.batasDesa, 3, '6 3');
-let layerDusunDepok = buatLayerBatas(WARNA.dusunDepok, 1.8, '3 3');
-let layerDusunLimus = buatLayerBatas(WARNA.dusunLimus, 1.8, '3 3');
-let layerDusunDesa = buatLayerBatas(WARNA.dusunDesa, 1.8, '3 3');
-const BATAS_PER_NAMA = {
-  'Desa Sukajadi': layerBatasDesa,
-  'Dusun Depok': layerDusunDepok,
-  'Dusun Limus': layerDusunLimus,
-  'Dusun Desa': layerDusunDesa
-};
+// ---------- 01. Batas Administrasi (poligon: desa + dusun) ----------
+let layerBatasDesa = L.geoJSON(null, {
+  style: (f) => f.properties.tipe === 'Batas Desa'
+    ? { color: WARNA.batas, weight: 3, dashArray: '6 3', fillOpacity: 0 }
+    : { color: '#8a5a1e', weight: 1.5, dashArray: '3 3', fillOpacity: 0 },
+  onEachFeature: (f, layer) => layer.bindPopup(popupSimple(f.properties.nama, f.properties.info))
+});
 
 // ---------- 02. Penggunaan Lahan ----------
 function buatLayerLahan(warna) {
@@ -89,42 +76,22 @@ let layerSawah = buatLayerLahan(WARNA.sawah);
 let layerVegetasi = buatLayerLahan(WARNA.vegetasi);
 let layerSungai = buatLayerLahan(WARNA.sungai);
 
-// ---------- 03. Fasilitas Umum (per kategori, masing-masing layer sendiri) ----------
-function buatLayerFasilitas(warna) {
-  return L.geoJSON(null, {
-    pointToLayer: (f, latlng) => L.circleMarker(latlng, {
-      radius: 6.5, fillColor: warna, color: '#fff', weight: 1.5, fillOpacity: 1
-    }),
-    onEachFeature: (f, layer) => {
-      layer.bindPopup(popupSimple(f.properties.nama_fasilitas));
-      layer.bindTooltip(f.properties.nama_fasilitas, {
-        permanent: true, direction: 'top', offset: [0, -6], className: 'map-label'
-      });
-      layer.on('mouseover', () => layer.setRadius(9.5));
-      layer.on('mouseout', () => layer.setRadius(6.5));
-    }
-  });
-}
-let layerFasPemerintahan = buatLayerFasilitas(WARNA_FASILITAS['Pemerintahan']);
-let layerFasPeribadatan = buatLayerFasilitas(WARNA_FASILITAS['Peribadatan']);
-let layerFasPendidikan = buatLayerFasilitas(WARNA_FASILITAS['Pendidikan']);
-let layerFasKesehatan = buatLayerFasilitas(WARNA_FASILITAS['Kesehatan']);
-let layerFasOlahraga = buatLayerFasilitas(WARNA_FASILITAS['Olahraga/Sosial']);
-let layerFasPemakaman = buatLayerFasilitas(WARNA_FASILITAS['Pemakaman']);
-let layerFasPosRonda = buatLayerFasilitas(WARNA_FASILITAS['Pos Ronda']);
-let layerFasAir = buatLayerFasilitas(WARNA_FASILITAS['Infrastruktur Air']);
-let layerFasLainnya = buatLayerFasilitas(WARNA_FASILITAS['Lainnya']);
-const FASILITAS_PER_JENIS = {
-  'Pemerintahan': layerFasPemerintahan,
-  'Peribadatan': layerFasPeribadatan,
-  'Pendidikan': layerFasPendidikan,
-  'Kesehatan': layerFasKesehatan,
-  'Olahraga/Sosial': layerFasOlahraga,
-  'Pemakaman': layerFasPemakaman,
-  'Pos Ronda': layerFasPosRonda,
-  'Infrastruktur Air': layerFasAir,
-  'Lainnya': layerFasLainnya
-};
+// ---------- 03. Fasilitas Umum ----------
+let layerFasilitas = L.geoJSON(null, {
+  pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+    radius: 6.5,
+    fillColor: WARNA_FASILITAS[f.properties.jenis_fasilitas] || '#888',
+    color: '#fff', weight: 1.5, fillOpacity: 1
+  }),
+  onEachFeature: (f, layer) => {
+    layer.bindPopup(popupSimple(f.properties.nama_fasilitas));
+    layer.bindTooltip(f.properties.nama_fasilitas, {
+      permanent: true, direction: 'top', offset: [0, -6], className: 'map-label'
+    });
+    layer.on('mouseover', () => layer.setRadius(9.5));
+    layer.on('mouseout', () => layer.setRadius(6.5));
+  }
+});
 
 // ---------- 04. UMKM ----------
 let layerUmkm = L.geoJSON(null, {
@@ -152,105 +119,58 @@ let layerBencana = L.geoJSON(null, {
   onEachFeature: (f, layer) => layer.bindPopup(popupSimple('Kerawanan Longsor', f.properties.tingkat_kerawanan))
 });
 
-// ---------- Load data: batas_desa.geojson (dipecah per nama wilayah) ----------
-let batasSudahDimuat = false;
-
-function muatBatasDesa() {
-  return fetch('data/batas_desa.geojson')
-    .then(r => { if (!r.ok) throw new Error('batas_desa.geojson gagal dimuat'); return r.json(); })
-    .then(geojson => {
-      geojson.features.forEach(f => {
-        const target = BATAS_PER_NAMA[f.properties.nama];
-        if (target) target.addData(f);
-      });
-    })
-    .catch(err => console.warn('[WebGIS]', err.message));
-}
-
-// ---------- Load data: fasilitas_umum.geojson (dipecah per kategori) ----------
-function muatFasilitasUmum() {
-  return fetch('data/fasilitas_umum.geojson')
-    .then(r => { if (!r.ok) throw new Error('fasilitas_umum.geojson gagal dimuat'); return r.json(); })
-    .then(geojson => {
-      geojson.features.forEach(f => {
-        const target = FASILITAS_PER_JENIS[f.properties.jenis_fasilitas];
-        if (target) target.addData(f);
-      });
-    })
-    .catch(err => console.warn('[WebGIS]', err.message));
-}
-
-// ---------- Load data lain (langsung 1 layer 1 file) ----------
-const sumberDataLain = [
+// ---------- Load semua GeoJSON ----------
+const sumberData = [
+  { url: 'data/batas_desa.geojson', layer: layerBatasDesa },
   { url: 'data/permukiman.geojson', layer: layerPermukiman },
   { url: 'data/sawah.geojson', layer: layerSawah },
   { url: 'data/vegetasi.geojson', layer: layerVegetasi },
   { url: 'data/sungai.geojson', layer: layerSungai },
+  { url: 'data/fasilitas_umum.geojson', layer: layerFasilitas },
   { url: 'data/umkm.geojson', layer: layerUmkm },
   { url: 'data/kerawanan_bencana.geojson', layer: layerBencana }
 ];
 
-Promise.all([
-  muatBatasDesa(),
-  muatFasilitasUmum(),
-  ...sumberDataLain.map(s =>
+let batasSudahDimuat = false;
+
+Promise.all(
+  sumberData.map(s =>
     fetch(s.url)
       .then(r => { if (!r.ok) throw new Error(s.url + ' gagal dimuat'); return r.json(); })
       .then(geojson => s.layer.addData(geojson))
       .catch(err => console.warn('[WebGIS]', err.message))
   )
-]).then(() => {
-  // Tampilkan semua layer default (checked) sesuai checkbox awal di sidebar
-  Object.values(checkboxMap).forEach(layer => {
-    // di-handle di bawah lewat sinkronisasi checkbox, bukan di sini
-  });
+).then(() => {
   layerBatasDesa.addTo(map);
-  layerDusunDepok.addTo(map);
-  layerDusunLimus.addTo(map);
-  layerDusunDesa.addTo(map);
   layerPermukiman.addTo(map);
   layerSawah.addTo(map);
   layerVegetasi.addTo(map);
   layerSungai.addTo(map);
-  Object.values(FASILITAS_PER_JENIS).forEach(l => l.addTo(map));
+  layerFasilitas.addTo(map);
   layerUmkm.addTo(map);
   // Kerawanan Bencana default OFF (sesuai checkbox unchecked)
-
   batasSudahDimuat = true;
 
+  // Kalau user udah lebih dulu klik "Masuk ke Peta" sebelum data selesai dimuat,
+  // langsung fit ke batas desa begitu data ini siap.
   if (document.getElementById('app').classList.contains('active')) {
-    fitKeBatasDesa();
+    try {
+      if (layerBatasDesa.getBounds().isValid()) {
+        map.invalidateSize();
+        map.fitBounds(layerBatasDesa.getBounds(), { padding: [30, 30] });
+      }
+    } catch (e) {}
   }
 });
 
-function fitKeBatasDesa() {
-  try {
-    if (layerBatasDesa.getBounds().isValid()) {
-      map.invalidateSize();
-      map.fitBounds(layerBatasDesa.getBounds(), { padding: [30, 30] });
-    }
-  } catch (e) {}
-}
-
 // ---------- Toggle checkbox layer ----------
 const checkboxMap = {
-  chkBatasDesa: layerBatasDesa,
-  chkDusunDepok: layerDusunDepok,
-  chkDusunLimus: layerDusunLimus,
-  chkDusunDesa: layerDusunDesa,
+  chkBatas: layerBatasDesa,
   chkPermukiman: layerPermukiman,
   chkSawah: layerSawah,
   chkVegetasi: layerVegetasi,
   chkSungai: layerSungai,
-  chkFasPemerintahan: layerFasPemerintahan,
-  chkFasPeribadatan: layerFasPeribadatan,
-  chkFasPendidikan: layerFasPendidikan,
-  chkFasKesehatan: layerFasKesehatan,
-  chkFasOlahraga: layerFasOlahraga,
-  chkFasPemakaman: layerFasPemakaman,
-  chkFasPosRonda: layerFasPosRonda,
-  chkFasAir: layerFasAir,
-  chkFasLainnya: layerFasLainnya,
+  chkFasilitas: layerFasilitas,
   chkUmkm: layerUmkm,
   chkBencana: layerBencana
 };
@@ -290,10 +210,11 @@ document.getElementById('btnMasuk').addEventListener('click', () => {
   document.getElementById('landing').style.display = 'none';
   document.getElementById('app').classList.add('active');
   setTimeout(() => {
-    if (batasSudahDimuat) {
-      fitKeBatasDesa();
-    } else {
-      map.invalidateSize();
-    }
+    map.invalidateSize();
+    try {
+      if (batasSudahDimuat && layerBatasDesa.getBounds().isValid()) {
+        map.fitBounds(layerBatasDesa.getBounds(), { padding: [30, 30] });
+      }
+    } catch (e) {}
   }, 150);
 });
