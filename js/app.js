@@ -85,6 +85,9 @@ let layerFasilitas = L.geoJSON(null, {
   }),
   onEachFeature: (f, layer) => {
     layer.bindPopup(popupSimple(f.properties.nama_fasilitas));
+    layer.bindTooltip(f.properties.nama_fasilitas, {
+      permanent: true, direction: 'top', offset: [0, -6], className: 'map-label'
+    });
     layer.on('mouseover', () => layer.setRadius(9.5));
     layer.on('mouseout', () => layer.setRadius(6.5));
   }
@@ -97,6 +100,9 @@ let layerUmkm = L.geoJSON(null, {
   }),
   onEachFeature: (f, layer) => {
     layer.bindPopup(popupSimple(f.properties.nama_usaha));
+    layer.bindTooltip(f.properties.nama_usaha, {
+      permanent: true, direction: 'top', offset: [0, -6], className: 'map-label'
+    });
     layer.on('mouseover', () => layer.setRadius(9.5));
     layer.on('mouseout', () => layer.setRadius(6.5));
   }
@@ -125,6 +131,8 @@ const sumberData = [
   { url: 'data/kerawanan_bencana.geojson', layer: layerBencana }
 ];
 
+let batasSudahDimuat = false;
+
 Promise.all(
   sumberData.map(s =>
     fetch(s.url)
@@ -141,12 +149,18 @@ Promise.all(
   layerFasilitas.addTo(map);
   layerUmkm.addTo(map);
   // Kerawanan Bencana default OFF (sesuai checkbox unchecked)
+  batasSudahDimuat = true;
 
-  try {
-    if (layerBatasDesa.getBounds().isValid()) {
-      map.fitBounds(layerBatasDesa.getBounds(), { padding: [40, 40] });
-    }
-  } catch (e) {}
+  // Kalau user udah lebih dulu klik "Masuk ke Peta" sebelum data selesai dimuat,
+  // langsung fit ke batas desa begitu data ini siap.
+  if (document.getElementById('app').classList.contains('active')) {
+    try {
+      if (layerBatasDesa.getBounds().isValid()) {
+        map.invalidateSize();
+        map.fitBounds(layerBatasDesa.getBounds(), { padding: [30, 30] });
+      }
+    } catch (e) {}
+  }
 });
 
 // ---------- Toggle checkbox layer ----------
@@ -195,5 +209,12 @@ map.on('mousemove', (e) => {
 document.getElementById('btnMasuk').addEventListener('click', () => {
   document.getElementById('landing').style.display = 'none';
   document.getElementById('app').classList.add('active');
-  setTimeout(() => map.invalidateSize(), 100);
+  setTimeout(() => {
+    map.invalidateSize();
+    try {
+      if (batasSudahDimuat && layerBatasDesa.getBounds().isValid()) {
+        map.fitBounds(layerBatasDesa.getBounds(), { padding: [30, 30] });
+      }
+    } catch (e) {}
+  }, 150);
 });
