@@ -200,18 +200,9 @@ Promise.all([
       .catch(err => console.warn('[WebGIS]', err.message))
   )
 ]).then(() => {
-  // Tampilkan semua layer default (checked) sesuai checkbox awal di sidebar
+  // Cuma Batas Desa Sukajadi yang nyala default, sisanya nunggu dicentang manual
   layerBatasDesa.addTo(map);
-  layerDusunDepok.addTo(map);
-  layerDusunLimus.addTo(map);
-  layerDusunDesa.addTo(map);
-  layerPermukiman.addTo(map);
-  layerSawah.addTo(map);
-  layerVegetasi.addTo(map);
-  layerSungai.addTo(map);
-  Object.values(FASILITAS_PER_JENIS).forEach(l => l.addTo(map));
-  layerUmkm.addTo(map);
-  // Kerawanan Bencana default OFF (sesuai checkbox unchecked)
+  // Semua layer lain default OFF (sesuai checkbox awal di sidebar)
 
   batasSudahDimuat = true;
 
