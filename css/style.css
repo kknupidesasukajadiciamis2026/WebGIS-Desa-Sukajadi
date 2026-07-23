@@ -1,0 +1,291 @@
+/* =========================================================
+   WebGIS Desa Sukajadi — KKN UPI 2026
+   Font: Arial semua, tidak ada italic
+========================================================= */
+
+:root {
+  --ink: #0a3c14;
+  --ink-soft: #1e4a2a;
+  --paper: #fbfaf5;
+  --paper-dim: #eef0e2;
+  --gold: #dca00a;
+  --line: rgba(10, 60, 20, 0.16);
+  --shadow: 0 10px 32px rgba(10, 40, 15, 0.25);
+  --radius: 4px;
+  --font: Arial, Helvetica, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; height: 100%;
+  font-family: var(--font);
+  font-style: normal;
+  color: var(--ink);
+  background: var(--ink);
+}
+i, em { font-style: normal; }
+
+/* ---------- LANDING OVERLAY ---------- */
+#landing {
+  position: fixed; inset: 0; z-index: 900;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(220,160,10,0.25), transparent 42%),
+    radial-gradient(circle at 88% 82%, rgba(107,142,35,0.4), transparent 50%),
+    linear-gradient(160deg, #0a3c14 0%, #123f1c 55%, #0a2e10 100%);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+}
+.landing-card {
+  position: relative;
+  max-width: 620px;
+  width: 100%;
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 40px 40px 34px;
+  border: 1px solid rgba(10,60,20,0.08);
+}
+.landing-logos {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 22px;
+}
+.landing-logos img.logo-round {
+  height: 58px; width: 58px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #fff;
+  padding: 3px;
+  box-shadow: 0 3px 10px rgba(10,40,15,0.18);
+}
+.landing-logos img.logo-wide {
+  height: 46px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #000;
+  padding: 4px 8px;
+}
+.landing-card h1 {
+  font-family: var(--font);
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 1.2;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.landing-sub {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0 0 16px;
+  line-height: 1.65;
+}
+.landing-list {
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  margin: 0 0 18px;
+  padding-left: 20px;
+}
+.landing-list li { margin-bottom: 2px; }
+.landing-note {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  background: rgba(201,154,58,0.12);
+  border-left: 3px solid var(--gold);
+  padding: 10px 13px;
+  border-radius: 0 4px 4px 0;
+  margin-bottom: 24px;
+}
+.landing-note b { color: var(--ink); }
+.landing-footer {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.landing-credit {
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.landing-credit b { color: var(--ink); }
+.btn-enter {
+  font-family: var(--font);
+  font-size: 13.5px;
+  font-weight: bold;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  padding: 13px 26px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.15s ease, transform 0.15s ease;
+  white-space: nowrap;
+}
+.btn-enter:hover { background: #123f1c; transform: translateY(-1px); }
+
+/* ---------- APP LAYOUT ---------- */
+#app { position: fixed; inset: 0; display: none; }
+#app.active { display: block; }
+#map { position: absolute; inset: 0; background: #dfe7dc; }
+
+/* Topbar */
+#topbar {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 500;
+  height: 56px;
+  background: var(--ink);
+  color: var(--paper);
+  display: flex; align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+#topbar .brand {
+  font-family: var(--font);
+  font-weight: bold;
+  font-size: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+#topbar .brand img.t-logo-round {
+  height: 30px; width: 30px;
+  border-radius: 50%;
+  background: #fff;
+  object-fit: contain;
+  padding: 2px;
+}
+#topbar .brand img.t-logo-wide {
+  height: 26px;
+  border-radius: 4px;
+  background: #000;
+  object-fit: contain;
+  padding: 2px 5px;
+}
+.topbar-spacer { flex: 1; }
+.icon-btn {
+  background: rgba(251,250,245,0.1);
+  border: 1px solid rgba(251,250,245,0.16);
+  color: var(--paper);
+  font-family: var(--font);
+  font-size: 12.5px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: background 0.15s ease;
+}
+.icon-btn:hover { background: rgba(251,250,245,0.2); }
+
+/* Sidebar */
+#sidebar {
+  position: absolute; top: 56px; bottom: 0; left: 0;
+  width: 290px; z-index: 480;
+  background: var(--paper);
+  border-right: 1px solid var(--line);
+  overflow-y: auto;
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+  font-size: 13.5px;
+}
+#sidebar.collapsed { transform: translateX(-290px); }
+
+.sb-section {
+  border-bottom: 1px solid var(--line);
+  padding: 14px 18px;
+}
+.sb-title {
+  font-family: var(--font);
+  font-weight: bold;
+  font-size: 12px;
+  color: var(--ink);
+  margin: 0 0 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sb-title .n { color: var(--gold); }
+
+.layer-row {
+  display: flex; align-items: center; gap: 9px;
+  padding: 6px 8px;
+  margin: 0 -8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.layer-row:hover { background: rgba(107,142,35,0.1); }
+.layer-row input { accent-color: var(--ink); cursor: pointer; }
+.layer-row .swatch {
+  width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+.layer-row .lbl { font-weight: normal; font-size: 13.5px; }
+
+.legend-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; padding: 3px 0 3px 22px;
+  color: var(--ink-soft);
+}
+.legend-item .sw { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.legend-item .sw.circle { border-radius: 50%; }
+
+.basemap-choices { display: flex; flex-direction: column; gap: 6px; }
+.basemap-choices button {
+  font-family: var(--font);
+  font-size: 12.5px;
+  padding: 9px 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: white;
+  cursor: pointer;
+  color: var(--ink-soft);
+  text-align: left;
+}
+.basemap-choices button.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.sb-about {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+/* Popups */
+.leaflet-popup-content-wrapper {
+  border-radius: var(--radius);
+  font-family: var(--font);
+}
+.gis-popup {
+  font-family: var(--font);
+  font-size: 13.5px;
+  color: var(--ink);
+  font-weight: bold;
+}
+.gis-popup .sub {
+  display: block;
+  font-weight: normal;
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+.leaflet-control-attribution { font-size: 9.5px !important; }
+
+#coordReadout {
+  position: absolute; bottom: 8px; left: 8px; z-index: 460;
+  font-family: var(--font);
+  font-size: 10.5px;
+  background: rgba(10,60,20,0.85);
+  color: var(--paper);
+  padding: 5px 10px;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  #sidebar { width: 84vw; }
+  .landing-card { padding: 30px 22px 26px; }
+  .landing-card h1 { font-size: 24px; }
+}
