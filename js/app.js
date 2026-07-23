@@ -56,10 +56,12 @@ function popupSimple(text, sub) {
   return `<div class="gis-popup">${text}${sub ? `<span class="sub">${sub}</span>` : ''}</div>`;
 }
 
-// ---------- 01. Batas Administrasi ----------
+// ---------- 01. Batas Administrasi (poligon: desa + dusun) ----------
 let layerBatasDesa = L.geoJSON(null, {
-  style: { color: WARNA.batas, weight: 3, dashArray: '5 3' },
-  onEachFeature: (f, layer) => layer.bindPopup(popupSimple('Batas Desa Sukajadi'))
+  style: (f) => f.properties.tipe === 'Batas Desa'
+    ? { color: WARNA.batas, weight: 3, dashArray: '6 3', fillOpacity: 0 }
+    : { color: '#8a5a1e', weight: 1.5, dashArray: '3 3', fillOpacity: 0 },
+  onEachFeature: (f, layer) => layer.bindPopup(popupSimple(f.properties.nama, f.properties.info))
 });
 
 // ---------- 02. Penggunaan Lahan ----------
