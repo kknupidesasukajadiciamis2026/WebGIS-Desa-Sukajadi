@@ -46,27 +46,25 @@ i, em { font-style: normal; }
   padding: 40px 40px 34px;
   border: 1px solid rgba(10,60,20,0.08);
 }
-.logo-bar {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: #fff;
-  border-radius: 8px;
-  padding: 8px 14px;
-  box-shadow: 0 3px 10px rgba(10,40,15,0.15);
+.landing-logos {
+  display: flex; align-items: center; gap: 16px;
   margin-bottom: 22px;
 }
-.logo-bar img {
-  height: 42px;
+.landing-logos img.logo-round {
+  height: 58px; width: 58px;
   object-fit: contain;
+  border-radius: 50%;
+  background: #fff;
+  padding: 3px;
+  box-shadow: 0 3px 10px rgba(10,40,15,0.18);
 }
-.logo-bar-sm {
+.landing-logos img.logo-wide {
+  height: 46px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #000;
   padding: 4px 8px;
-  gap: 8px;
-  margin-bottom: 0;
-  box-shadow: none;
 }
-.logo-bar-sm img { height: 26px; }
 .landing-card h1 {
   font-family: var(--font);
   font-weight: bold;
@@ -149,6 +147,20 @@ i, em { font-style: normal; }
   font-weight: bold;
   font-size: 16px;
   display: flex; align-items: center; gap: 10px;
+}
+#topbar .brand img.t-logo-round {
+  height: 30px; width: 30px;
+  border-radius: 50%;
+  background: #fff;
+  object-fit: contain;
+  padding: 2px;
+}
+#topbar .brand img.t-logo-wide {
+  height: 26px;
+  border-radius: 4px;
+  background: #000;
+  object-fit: contain;
+  padding: 2px 5px;
 }
 .topbar-spacer { flex: 1; }
 .icon-btn {
