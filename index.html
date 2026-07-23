@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WebGIS Desa Sukajadi</title>
+<meta name="description" content="WebGIS Desa Sukajadi, Kecamatan Sadananya, Kabupaten Ciamis." />
+<link rel="icon" type="image/png" href="img/logo-kkn.png" />
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ============ LANDING PAGE ============ -->
+<div id="landing">
+  <div class="landing-card">
+    <div class="landing-logos">
+      <img class="logo-round" src="img/logo-kkn.png" alt="Logo KKN UPI Desa Sukajadi" />
+      <img class="logo-wide" src="img/logo-upi.png" alt="Logo SPIG FPIPS UPI" />
+    </div>
+
+    <h1>WebGIS Desa Sukajadi</h1>
+
+    <p class="landing-sub">
+      WebGIS ini menyajikan data geospasial Desa Sukajadi, Kecamatan Sadananya,
+      Kabupaten Ciamis, secara interaktif. Data yang ditampilkan meliputi:
+    </p>
+    <ul class="landing-list">
+      <li>Batas Administrasi</li>
+      <li>Penggunaan Lahan</li>
+      <li>Fasilitas Umum</li>
+      <li>UMKM</li>
+      <li>Kerawanan Bencana</li>
+    </ul>
+
+    <p class="landing-note">
+      <b>Catatan:</b> WebGIS ini disusun sebagai bagian dari luaran kegiatan Kuliah Kerja
+      Nyata dan bertujuan untuk mendukung visualisasi hasil pengolahan data geospasial.
+      Informasi yang ditampilkan tidak dimaksudkan sebagai produk resmi dari lembaga.
+    </p>
+
+    <div class="landing-footer">
+      <div class="landing-credit">
+        Disusun oleh <b>Kelompok 2 KKN Kampus Berdampak</b>, Desa Sukajadi, Sadananya, Ciamis<br/>
+        Program Studi Survei Pemetaan dan Informasi Geografis<br/>
+        Universitas Pendidikan Indonesia
+      </div>
+      <button class="btn-enter" id="btnMasuk">Masuk ke Peta &nbsp;&rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APLIKASI PETA ============ -->
+<div id="app">
+  <div id="topbar">
+    <button class="icon-btn" id="toggleSidebar" title="Tampilkan/sembunyikan panel">&#9776;</button>
+    <div class="brand">
+      <img class="t-logo-round" src="img/logo-kkn.png" alt="Logo KKN" />
+      <img class="t-logo-wide" src="img/logo-upi.png" alt="Logo SPIG UPI" />
+      WebGIS Desa Sukajadi
+    </div>
+    <div class="topbar-spacer"></div>
+  </div>
+
+  <div id="sidebar">
+
+    <div class="sb-section">
+      <div class="sb-title"><span class="n">01</span> Batas Administrasi</div>
+      <label class="layer-row">
+        <input type="checkbox" id="chkBatas" checked>
+        <span class="swatch" style="background:#0a3c14"></span>
+        <span class="lbl">Batas Desa</span>
+      </label>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title"><span class="n">02</span> Penggunaan Lahan</div>
+      <label class="layer-row">
+        <input type="checkbox" id="chkPermukiman" checked>
+        <span class="swatch" style="background:#8a5a1e"></span>
+        <span class="lbl">Permukiman</span>
+      </label>
+      <label class="layer-row">
+        <input type="checkbox" id="chkSawah" checked>
+        <span class="swatch" style="background:#6b8e23"></span>
+        <span class="lbl">Sawah</span>
+      </label>
+      <label class="layer-row">
+        <input type="checkbox" id="chkVegetasi" checked>
+        <span class="swatch" style="background:#0a3c14"></span>
+        <span class="lbl">Vegetasi</span>
+      </label>
+      <label class="layer-row">
+        <input type="checkbox" id="chkSungai" checked>
+        <span class="swatch" style="background:#2f7fb0"></span>
+        <span class="lbl">Sungai</span>
+      </label>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title"><span class="n">03</span> Fasilitas Umum</div>
+      <label class="layer-row">
+        <input type="checkbox" id="chkFasilitas" checked>
+        <span class="swatch" style="background:#dca00a;border-radius:50%"></span>
+        <span class="lbl">Fasilitas Umum</span>
+      </label>
+      <div class="legend-item"><span class="sw circle" style="background:#0a3c14"></span>Pemerintahan</div>
+      <div class="legend-item"><span class="sw circle" style="background:#dca00a"></span>Peribadatan</div>
+      <div class="legend-item"><span class="sw circle" style="background:#1d4e89"></span>Pendidikan</div>
+      <div class="legend-item"><span class="sw circle" style="background:#b3352e"></span>Kesehatan</div>
+      <div class="legend-item"><span class="sw circle" style="background:#6b8e23"></span>Olahraga/Sosial</div>
+      <div class="legend-item"><span class="sw circle" style="background:#5a5a5a"></span>Pemakaman</div>
+      <div class="legend-item"><span class="sw circle" style="background:#8a5a1e"></span>Pos Ronda</div>
+      <div class="legend-item"><span class="sw circle" style="background:#1f7a8c"></span>Infrastruktur Air</div>
+      <div class="legend-item"><span class="sw circle" style="background:#6b4c7a"></span>Lainnya</div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title"><span class="n">04</span> UMKM</div>
+      <label class="layer-row">
+        <input type="checkbox" id="chkUmkm" checked>
+        <span class="swatch" style="background:#c1440e;border-radius:50%"></span>
+        <span class="lbl">UMKM</span>
+      </label>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title"><span class="n">05</span> Kerawanan Bencana</div>
+      <label class="layer-row">
+        <input type="checkbox" id="chkBencana">
+        <span class="swatch" style="background:#b3352e"></span>
+        <span class="lbl">Kerawanan Bencana</span>
+      </label>
+      <div class="legend-item"><span class="sw" style="background:#b3352e"></span>Tinggi</div>
+      <div class="legend-item"><span class="sw" style="background:#d1893a"></span>Sedang</div>
+      <div class="legend-item"><span class="sw" style="background:#6b8e23"></span>Rendah</div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title"><span class="n">06</span> Basemap</div>
+      <div class="basemap-choices">
+        <button id="bmOSM" class="active">OpenStreetMap</button>
+        <button id="bmEsri">Esri Satelit</button>
+        <button id="bmGoogle">Google Satelit</button>
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-title">Tentang</div>
+      <p class="sb-about">
+        Data pada WebGIS ini merupakan hasil digitasi dan survei lapangan Kelompok 2
+        KKN Kampus Berdampak di Desa Sukajadi, meliputi batas administrasi, penggunaan
+        lahan, fasilitas umum, UMKM, dan kerawanan bencana longsor.
+      </p>
+    </div>
+
+  </div>
+
+  <div id="map"></div>
+  <div id="coordReadout">Lat -, Lon -</div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
