@@ -273,6 +273,21 @@ i, em { font-style: normal; }
 
 .leaflet-control-attribution { font-size: 9.5px !important; }
 
+/* Label permanen di atas titik fasum/umkm */
+.leaflet-tooltip.map-label {
+  background: rgba(255,255,255,0.92);
+  border: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-family: var(--font);
+  font-size: 10.5px;
+  font-weight: bold;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.leaflet-tooltip.map-label::before { display: none; }
+
 #coordReadout {
   position: absolute; bottom: 8px; left: 8px; z-index: 460;
   font-family: var(--font);
